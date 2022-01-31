@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_test/provider/user_provider.dart';
 import 'package:insta_test/tools/colors.dart';
+import 'package:insta_test/tools/variables_globales.dart';
 import 'package:provider/provider.dart';
 import 'package:insta_test/models/user.dart' as model;
 
@@ -46,13 +47,13 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: [
+        children: homeScreenItems /* [
           Text('main'),
           Text('buscar'),
           Text('hacer post'),
           Text('notificiacion'),
           Text('perfil'),
-        ],
+        ] */,
         controller: pageController,
         onPageChanged: onPageChanged,
       ),
