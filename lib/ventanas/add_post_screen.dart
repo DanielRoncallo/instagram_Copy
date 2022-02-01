@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:insta_test/models/user.dart';
 import 'package:insta_test/provider/user_provider.dart';
+import 'package:insta_test/resources/firestore_methods.dart';
 import 'package:insta_test/tools/colors.dart';
 import 'package:insta_test/tools/utils.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,44 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   bool isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
+
+  void postImage(String uid, String username, String profImage) async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      String res = await FireStoreMethods().uploadPost(
+        _descriptionController.text,
+        _file!,
+        uid,
+        username,
+        profImage,
+      );
+      if (res == "success") {
+        setState(() {
+          isLoading = false;
+        });
+        setState(() {
+          isLoading = false;
+        });
+        showSnackbar('Posted!', context);
+        clearImage();
+      } else {
+        showSnackbar(res, context);
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      showSnackbar(e.toString(), context);
+    }
+  }
+
+  void clearImage() {
+    setState(() {
+      _file = null;
+    });
+  }
 
   _selectImage(BuildContext Context) async {
     return showDialog(
@@ -61,6 +100,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
 
@@ -78,13 +123,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () {},
+                onPressed: clearImage,
               ),
               title: const Text('Post to'),
               centerTitle: false,
               actions: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () =>
+                      postImage(user.uid, user.username, user.photoUrl),
                   child: const Text(
                     'post',
                     style: TextStyle(
@@ -98,6 +144,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             body: Column(
               children: [
+                isLoading
+                    ? const LinearProgressIndicator()
+                    : const Padding(padding: EdgeInsets.only(top: 0.0)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,

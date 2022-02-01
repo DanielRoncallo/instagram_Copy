@@ -46,7 +46,7 @@ class AuthMethods {
         print(cred.user!.uid);
         //sube la imagen al storage
         String photoUrl = await StorageMethods()
-            .uploadIageToStorage('profilePics', file, false);
+            .uploadImageToStorage('profilePics', file, false);
 
         model.User user = model.User(
           username: username,
