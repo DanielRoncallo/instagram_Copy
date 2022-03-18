@@ -7,10 +7,8 @@ import 'package:insta_test/responsive/webScreenLayout.dart';
 import 'package:insta_test/tools/colors.dart';
 import 'package:insta_test/tools/utils.dart';
 import 'package:insta_test/ventanas/sign_up.dart';
-import 'package:insta_test/widgets/text_field.dart';
-
-import 'home_screen.dart';
-
+import 'package:insta_test/widgets/text_field.dart';  
+ 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
