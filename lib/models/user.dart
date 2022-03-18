@@ -9,7 +9,7 @@ class User {
   final List followers;
   final List following;
 
-  const User(
+  const User( 
       {required this.username,
       required this.uid,
       required this.photoUrl,

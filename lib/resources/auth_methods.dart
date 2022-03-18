@@ -1,8 +1,6 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:insta_test/models/user.dart' as model;
 import 'package:insta_test/resources/storage_methods.dart';
 
@@ -11,9 +9,10 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<model.User> getUserDetails() async{
+  Future<model.User> getUserDetails() async {
     User currentUser = _auth.currentUser!;
-    DocumentSnapshot snap = await _firestore.collection('usuarios').doc(currentUser.uid).get();
+    DocumentSnapshot snap =
+        await _firestore.collection('usuarios').doc(currentUser.uid).get();
 
     return model.User.fromSnap(snap);
   }
@@ -49,17 +48,18 @@ class AuthMethods {
             .uploadImageToStorage('profilePics', file, false);
 
         model.User user = model.User(
-          username: username,
-          uid: cred.user!.uid,
-          email: email,
-          bio: bio,
-          followers: [],
-          following: [],
-          photoUrl: photoUrl
-        );  
+            username: username,
+            uid: cred.user!.uid,
+            email: email,
+            bio: bio,
+            followers: [],
+            following: [],
+            photoUrl: photoUrl);
 
         //añadir usuario a la base de datos
-        await _firestore.collection('usuarios').doc(cred.user!.uid).set(user.toJson(),);
+        await _firestore.collection('usuarios').doc(cred.user!.uid).set(
+              user.toJson(),
+            );
         //otro metodo, no se usa porque tiene uid diferentes
         /* await _firestore.collection('usuarios').add({
           'username': username,
@@ -91,9 +91,10 @@ class AuthMethods {
     String res = 'Ocurrio un error';
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
-        await _auth.signInWithEmailAndPassword(email: email, password: password);
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
         res = 'exito';
-      }else{
+      } else {
         res = 'Por favor rellene todos los campos';
       }
     } on FirebaseAuthException catch (err) {
